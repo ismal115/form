@@ -399,7 +399,6 @@ Una comunidad de fe arraigada en el amor de Cristo y guiada por el Espíritu San
                 </div>
                 <input type="hidden" name="_template" value="table">
                 <input type="text" name="_honey" style="display:none">
-                <input type="hidden" name="_redirect" value="https://ismal115.github.io/form/" >
                 <input type="hidden" name="_captcha" value="false">
                 <button type="submit" class="btn">Enviar Mensaje</button>
             </form>
@@ -468,81 +467,72 @@ Una comunidad de fe arraigada en el amor de Cristo y guiada por el Espíritu San
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contactoForm');
-    const modal = document.getElementById('confirmationModal');
-    const closeModal = document.querySelector('.close-modal');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('contactoForm');
+  const modal = document.getElementById('confirmationModal');
+  const closeModal = document.querySelector('.close-modal');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-    // Opción 1: Usando el evento submit del formulario
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validación de campos requeridos
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-        
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.style.borderColor = 'red';
-            } else {
-                field.style.borderColor = '';
-            }
-        });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-        if (!isValid) {
-            alert('Por favor complete todos los campos requeridos');
-            return;
-        }
-fetch(form.action, {
-    method: 'POST',
-    body: new FormData(form),
-    headers: {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+      if (!field.value.trim()) {
+        isValid = false;
+        field.style.borderColor = 'red';
+      } else {
+        field.style.borderColor = '';
+      }
+    });
+
+    if (!isValid) {
+      alert('Por favor complete todos los campos requeridos');
+      return;
+    }
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: {
         'Accept': 'application/json'
-    }
-})
-
-        .then(response => {
-            if (response.ok) {
-                showModal();
-                form.reset(); // Limpiar el formulario
-            } else {
-                alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
-        });
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        showModal();
+        form.reset();
+      } else {
+        alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
     });
+  });
 
-    // Opción 2: Alternativa más simple si prefieres que FormSubmit maneje el envío
-    // form.addEventListener('submit', function() {
-    //     showModal();
-    // });
+  function showModal() {
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
 
-    // Mostrar modal
-    function showModal() {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Evitar scroll
+  function closeModalFunc() {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  closeModal.addEventListener('click', closeModalFunc);
+  modalCloseBtn.addEventListener('click', closeModalFunc);
+  window.addEventListener('click', function (e) {
+    if (e.target === modal) {
+      closeModalFunc();
     }
-
-    // Cerrar modal
-    function closeModalFunc() {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Restaurar scroll
-    }
-
-    // Event listeners para cerrar modal
-    closeModal.addEventListener('click', closeModalFunc);
-    modalCloseBtn.addEventListener('click', closeModalFunc);
-    window.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModalFunc();
-        }
-    });
+  });
 });
+</script>
 </script>
     <!-- Footer -->
 <footer>
