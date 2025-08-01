@@ -365,7 +365,7 @@ Una comunidad de fe arraigada en el amor de Cristo y guiada por el Espíritu San
             <h2>Contáctanos</h2>
             <p>Envíanos un mensaje y nos pondremos en contacto contigo</p>
             
-            <form class="contacto-form" action="https://formsubmit.co/felizismael5656@gmail.com" method="post">
+            <form id="miFormulario" class="contacto-form" action="https://formsubmit.co/felizismael5656@gmail.com" method="post">
                 <div class="form-group">
                     <input type="text" id="nombre" name="nombre" required>
                     <label for="nombre">Nombre completo</label>
@@ -525,6 +525,30 @@ document.getElementById('contactoForm').addEventListener('submit', async functio
         submitBtn.innerHTML = originalBtnText;
         submitBtn.disabled = false;
     }
+
+     document.getElementById("miFormulario").addEventListener("submit", function(e) {
+    e.preventDefault(); // evita la redirección
+
+    const datos = new FormData(this);
+
+    fetch(this.action, {
+      method: 'POST',
+      body: datos,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        alert("Formulario enviado correctamente.");
+        // puedes también limpiar el formulario si deseas:
+        this.reset();
+      } else {
+        alert("Error al enviar el formulario.");
+      }
+    }).catch(error => {
+      alert("Hubo un problema al enviar el formulario.");
+    });
+  });
 });
 </script>
     <!-- Footer -->
