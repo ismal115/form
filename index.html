@@ -365,7 +365,7 @@ Una comunidad de fe arraigada en el amor de Cristo y guiada por el Espíritu San
             <h2>Contáctanos</h2>
             <p>Envíanos un mensaje y nos pondremos en contacto contigo</p>
             
-            <form id="miFormulario" class="contacto-form" action="https://formsubmit.co/felizismael5656@gmail.com" method="post">
+            <form class="contacto-form" action="https://formsubmit.co/felizismael5656@gmail.com" method="post">
                 <div class="form-group">
                     <input type="text" id="nombre" name="nombre" required>
                     <label for="nombre">Nombre completo</label>
@@ -399,8 +399,8 @@ Una comunidad de fe arraigada en el amor de Cristo y guiada por el Espíritu San
                 </div>
                 <input type="hidden" name="_template" value="table">
                 <input type="text" name="_honey" style="display:none">
+                <input type="hidden" name="_redirect" value="https://ismal115.github.io/form/" >
                 <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_redirect" value="https://ismal115.github.io/El-Eyon-adonai-roi/index.html" >
                 <button type="submit" class="btn">Enviar Mensaje</button>
             </form>
         </div>
@@ -468,87 +468,80 @@ Una comunidad de fe arraigada en el amor de Cristo y guiada por el Espíritu San
 </style>
 
 <script>
-document.getElementById('contactoForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // Validación de campos
-    const requiredFields = this.querySelectorAll('[required]');
-    let isValid = true;
-    
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            isValid = false;
-            field.style.border = '1px solid red';
-        } else {
-            field.style.border = '';
-        }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactoForm');
+    const modal = document.getElementById('confirmationModal');
+    const closeModal = document.querySelector('.close-modal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-    if (!isValid) {
-        alert('Por favor complete todos los campos requeridos');
-        return;
-    }
-
-    // Mostrar loader (opcional)
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerHTML;
-    submitBtn.innerHTML = 'Enviando...';
-    submitBtn.disabled = true;
-
-    try {
-        // Enviar formulario
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: new FormData(this),
-            headers: {
-                'Accept': 'application/json'
+    // Opción 1: Usando el evento submit del formulario
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validación de campos requeridos
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.style.borderColor = 'red';
+            } else {
+                field.style.borderColor = '';
             }
         });
-        
-        if (response.ok) {
-            // Mostrar alerta de éxito
-            alert('¡Mensaje enviado con éxito! Gracias por contactarnos.');
-            
-            // Limpiar formulario
-            this.reset();
-            
-            // Opcional: Hacer scroll a la sección de contacto
-            window.location.href = '#contacto';
-        } else {
-            throw new Error('Error en el envío');
+
+        if (!isValid) {
+            alert('Por favor complete todos los campos requeridos');
+            return;
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
-    } finally {
-        // Restaurar botón
-        submitBtn.innerHTML = originalBtnText;
-        submitBtn.disabled = false;
+fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: {
+        'Accept': 'application/json'
+    }
+})
+
+        .then(response => {
+            if (response.ok) {
+                showModal();
+                form.reset(); // Limpiar el formulario
+            } else {
+                alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un error al enviar el mensaje. Por favor intente nuevamente.');
+        });
+    });
+
+    // Opción 2: Alternativa más simple si prefieres que FormSubmit maneje el envío
+    // form.addEventListener('submit', function() {
+    //     showModal();
+    // });
+
+    // Mostrar modal
+    function showModal() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Evitar scroll
     }
 
-     document.getElementById("miFormulario").addEventListener("submit", function(e) {
-    e.preventDefault(); // evita la redirección
+    // Cerrar modal
+    function closeModalFunc() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restaurar scroll
+    }
 
-    const datos = new FormData(this);
-
-    fetch(this.action, {
-      method: 'POST',
-      body: datos,
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(response => {
-      if (response.ok) {
-        alert("Formulario enviado correctamente.");
-        // puedes también limpiar el formulario si deseas:
-        this.reset();
-      } else {
-        alert("Error al enviar el formulario.");
-      }
-    }).catch(error => {
-      alert("Hubo un problema al enviar el formulario.");
+    // Event listeners para cerrar modal
+    closeModal.addEventListener('click', closeModalFunc);
+    modalCloseBtn.addEventListener('click', closeModalFunc);
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModalFunc();
+        }
     });
-  });
 });
 </script>
     <!-- Footer -->
